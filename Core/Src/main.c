@@ -134,8 +134,8 @@ int main(void)
 				default:
 					break;
 			  }
-			  SW1_SwitchState[1] = SW1_SwitchState[0];								//save history
 		  }
+		  SW1_SwitchState[1] = SW1_SwitchState[0];									//save history
 	  }
 
 	  //control LED

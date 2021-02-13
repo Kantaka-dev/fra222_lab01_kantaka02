@@ -2886,17 +2886,17 @@ OUTPUT(fra222_lab01.elf elf32-littlearm)
  .debug_macro   0x0000000000014368      0x1de Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
  .debug_macro   0x0000000000014546      0x1bb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
 
-.debug_line     0x0000000000000000     0x4f87
- .debug_line    0x0000000000000000      0x749 Core/Src/main.o
- .debug_line    0x0000000000000749      0x6c0 Core/Src/stm32f4xx_hal_msp.o
- .debug_line    0x0000000000000e09      0x738 Core/Src/stm32f4xx_it.o
- .debug_line    0x0000000000001541      0x6ab Core/Src/system_stm32f4xx.o
- .debug_line    0x0000000000001bec       0x85 Core/Startup/startup_stm32f411retx.o
- .debug_line    0x0000000000001c71      0x895 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_line    0x0000000000002506      0x9b9 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_line    0x0000000000002ebf      0x838 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_line    0x00000000000036f7      0x8ed Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
- .debug_line    0x0000000000003fe4      0xfa3 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+.debug_line     0x0000000000000000     0x4f88
+ .debug_line    0x0000000000000000      0x74a Core/Src/main.o
+ .debug_line    0x000000000000074a      0x6c0 Core/Src/stm32f4xx_hal_msp.o
+ .debug_line    0x0000000000000e0a      0x738 Core/Src/stm32f4xx_it.o
+ .debug_line    0x0000000000001542      0x6ab Core/Src/system_stm32f4xx.o
+ .debug_line    0x0000000000001bed       0x85 Core/Startup/startup_stm32f411retx.o
+ .debug_line    0x0000000000001c72      0x895 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_line    0x0000000000002507      0x9b9 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_line    0x0000000000002ec0      0x838 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_line    0x00000000000036f8      0x8ed Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_line    0x0000000000003fe5      0xfa3 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
 
 .debug_str      0x0000000000000000    0x80e5d
  .debug_str     0x0000000000000000    0x7f620 Core/Src/main.o

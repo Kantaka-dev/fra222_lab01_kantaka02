@@ -37,13 +37,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  16 .debug_macro  00014701  00000000  00000000  000272b0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_line   00004f87  00000000  00000000  0003b9b1  2**0
+ 17 .debug_line   00004f88  00000000  00000000  0003b9b1  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    00080e5d  00000000  00000000  00040938  2**0
+ 18 .debug_str    00080e5d  00000000  00000000  00040939  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  000c1795  2**0
+ 19 .comment      0000007b  00000000  00000000  000c1796  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000016bc  00000000  00000000  000c1810  2**2
+ 20 .debug_frame  000016bc  00000000  00000000  000c1814  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -409,7 +409,7 @@ int main(void)
  8000502:	687b      	ldr	r3, [r7, #4]
  8000504:	1ad3      	subs	r3, r2, r3
  8000506:	2b63      	cmp	r3, #99	; 0x63
- 8000508:	d934      	bls.n	8000574 <main+0x9c>
+ 8000508:	d935      	bls.n	8000576 <main+0x9e>
 	  {
 		  SW1_SwitchState[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); 				//read SW1 from PA10
  800050a:	f44f 6180 	mov.w	r1, #1024	; 0x400
@@ -424,10 +424,10 @@ int main(void)
 		  if((SW1_SwitchState[0]==0) && (SW1_SwitchState[1]==1))					//button is pressed
  800051e:	783b      	ldrb	r3, [r7, #0]
  8000520:	2b00      	cmp	r3, #0
- 8000522:	d127      	bne.n	8000574 <main+0x9c>
+ 8000522:	d125      	bne.n	8000570 <main+0x98>
  8000524:	787b      	ldrb	r3, [r7, #1]
  8000526:	2b01      	cmp	r3, #1
- 8000528:	d124      	bne.n	8000574 <main+0x9c>
+ 8000528:	d122      	bne.n	8000570 <main+0x98>
 		  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  			//GPIO_PIN_RESET is LOW, GPIO_PIN_SET is HIGH (enum)
 		  {
 			  switch(LED1_Period)
@@ -445,80 +445,80 @@ int main(void)
 
 				default:
 					break;
- 8000540:	e016      	b.n	8000570 <main+0x98>
+ 8000540:	e017      	b.n	8000572 <main+0x9a>
 			  switch(LED1_Period)
  8000542:	f5b3 7f7a 	cmp.w	r3, #1000	; 0x3e8
  8000546:	d007      	beq.n	8000558 <main+0x80>
  8000548:	f5b3 6ffa 	cmp.w	r3, #2000	; 0x7d0
  800054c:	d000      	beq.n	8000550 <main+0x78>
 					break;
- 800054e:	e00f      	b.n	8000570 <main+0x98>
+ 800054e:	e010      	b.n	8000572 <main+0x9a>
 					LED1_Period = 1000;												//change frequency from 0.5Hz to 1Hz
  8000550:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  8000554:	81fb      	strh	r3, [r7, #14]
 					break;
- 8000556:	e00b      	b.n	8000570 <main+0x98>
+ 8000556:	e00c      	b.n	8000572 <main+0x9a>
 					LED1_Period = 500;												//change frequency from 1Hz to 2Hz
  8000558:	f44f 73fa 	mov.w	r3, #500	; 0x1f4
  800055c:	81fb      	strh	r3, [r7, #14]
 					break;
- 800055e:	e007      	b.n	8000570 <main+0x98>
+ 800055e:	e008      	b.n	8000572 <main+0x9a>
 					LED1_Period = 333;												//change frequency from 2Hz to 3Hz
  8000560:	f240 134d 	movw	r3, #333	; 0x14d
  8000564:	81fb      	strh	r3, [r7, #14]
 					break;
- 8000566:	e003      	b.n	8000570 <main+0x98>
+ 8000566:	e004      	b.n	8000572 <main+0x9a>
 					LED1_Period = 2000;												//change frequency from 3Hz to 0.5Hz
  8000568:	f44f 63fa 	mov.w	r3, #2000	; 0x7d0
  800056c:	81fb      	strh	r3, [r7, #14]
 					break;
- 800056e:	bf00      	nop
+ 800056e:	e000      	b.n	8000572 <main+0x9a>
 			  }
-			  SW1_SwitchState[1] = SW1_SwitchState[0];								//save history
- 8000570:	783b      	ldrb	r3, [r7, #0]
- 8000572:	707b      	strb	r3, [r7, #1]
 		  }
+ 8000570:	bf00      	nop
+		  SW1_SwitchState[1] = SW1_SwitchState[0];									//save history
+ 8000572:	783b      	ldrb	r3, [r7, #0]
+ 8000574:	707b      	strb	r3, [r7, #1]
 	  }
 
 	  //control LED
 	  if(HAL_GetTick()-TimeStamp >= LED1_Period/2)							//time in millisecond
- 8000574:	f000 faae 	bl	8000ad4 <HAL_GetTick>
- 8000578:	4602      	mov	r2, r0
- 800057a:	68bb      	ldr	r3, [r7, #8]
- 800057c:	1ad3      	subs	r3, r2, r3
- 800057e:	89fa      	ldrh	r2, [r7, #14]
- 8000580:	0852      	lsrs	r2, r2, #1
- 8000582:	b292      	uxth	r2, r2
- 8000584:	4293      	cmp	r3, r2
- 8000586:	d3b9      	bcc.n	80004fc <main+0x24>
+ 8000576:	f000 faad 	bl	8000ad4 <HAL_GetTick>
+ 800057a:	4602      	mov	r2, r0
+ 800057c:	68bb      	ldr	r3, [r7, #8]
+ 800057e:	1ad3      	subs	r3, r2, r3
+ 8000580:	89fa      	ldrh	r2, [r7, #14]
+ 8000582:	0852      	lsrs	r2, r2, #1
+ 8000584:	b292      	uxth	r2, r2
+ 8000586:	4293      	cmp	r3, r2
+ 8000588:	d3b8      	bcc.n	80004fc <main+0x24>
 	  {
 		  TimeStamp = HAL_GetTick();
- 8000588:	f000 faa4 	bl	8000ad4 <HAL_GetTick>
- 800058c:	60b8      	str	r0, [r7, #8]
+ 800058a:	f000 faa3 	bl	8000ad4 <HAL_GetTick>
+ 800058e:	60b8      	str	r0, [r7, #8]
 
 		  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET)			//blink LED at PA9
- 800058e:	f44f 7100 	mov.w	r1, #512	; 0x200
- 8000592:	480a      	ldr	r0, [pc, #40]	; (80005bc <main+0xe4>)
- 8000594:	f000 fd12 	bl	8000fbc <HAL_GPIO_ReadPin>
- 8000598:	4603      	mov	r3, r0
- 800059a:	2b01      	cmp	r3, #1
- 800059c:	d106      	bne.n	80005ac <main+0xd4>
+ 8000590:	f44f 7100 	mov.w	r1, #512	; 0x200
+ 8000594:	4809      	ldr	r0, [pc, #36]	; (80005bc <main+0xe4>)
+ 8000596:	f000 fd11 	bl	8000fbc <HAL_GPIO_ReadPin>
+ 800059a:	4603      	mov	r3, r0
+ 800059c:	2b01      	cmp	r3, #1
+ 800059e:	d106      	bne.n	80005ae <main+0xd6>
 		  {
 			  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
- 800059e:	2200      	movs	r2, #0
- 80005a0:	f44f 7100 	mov.w	r1, #512	; 0x200
- 80005a4:	4805      	ldr	r0, [pc, #20]	; (80005bc <main+0xe4>)
- 80005a6:	f000 fd21 	bl	8000fec <HAL_GPIO_WritePin>
- 80005aa:	e7a7      	b.n	80004fc <main+0x24>
+ 80005a0:	2200      	movs	r2, #0
+ 80005a2:	f44f 7100 	mov.w	r1, #512	; 0x200
+ 80005a6:	4805      	ldr	r0, [pc, #20]	; (80005bc <main+0xe4>)
+ 80005a8:	f000 fd20 	bl	8000fec <HAL_GPIO_WritePin>
+ 80005ac:	e7a6      	b.n	80004fc <main+0x24>
 		  } else {
 			  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
- 80005ac:	2201      	movs	r2, #1
- 80005ae:	f44f 7100 	mov.w	r1, #512	; 0x200
- 80005b2:	4802      	ldr	r0, [pc, #8]	; (80005bc <main+0xe4>)
- 80005b4:	f000 fd1a 	bl	8000fec <HAL_GPIO_WritePin>
+ 80005ae:	2201      	movs	r2, #1
+ 80005b0:	f44f 7100 	mov.w	r1, #512	; 0x200
+ 80005b4:	4801      	ldr	r0, [pc, #4]	; (80005bc <main+0xe4>)
+ 80005b6:	f000 fd19 	bl	8000fec <HAL_GPIO_WritePin>
 	  if(HAL_GetTick()-TimeStamp_button >= 100)									//control settling time for debouncing switch
- 80005b8:	e7a0      	b.n	80004fc <main+0x24>
- 80005ba:	bf00      	nop
+ 80005ba:	e79f      	b.n	80004fc <main+0x24>
  80005bc:	40020000 	.word	0x40020000
 
 080005c0 <SystemClock_Config>:
