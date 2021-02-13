@@ -91,6 +91,7 @@ int main(void)
   /* USER CODE BEGIN 2 */												//able to write2
 
   GPIO_PinState SW1_SwitchState[2];											//define variable that type is GPIO_PinState
+  GPIO_PinState SW2_SwitchState[2];
   uint16_t LED1_Period = 2000;												//LED1 default frequency at 0.5Hz
   uint32_t TimeStamp = 0;													//time default at 0 s
   uint32_t TimeStamp_button = 0;
@@ -105,12 +106,14 @@ int main(void)
 
     /* USER CODE BEGIN 3 */													//able to write3
 
+	  //button
 	  if(HAL_GetTick()-TimeStamp_button >= 100)									//control settling time for debouncing switch
 	  {
-		  SW1_SwitchState[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); 				//read SW1 from PA10
 		  TimeStamp_button = HAL_GetTick();
 
-		  if((SW1_SwitchState[0]==1) && (SW1_SwitchState[1]==0))					//button is pressed
+		  SW1_SwitchState[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); 				//read SW1 from PA10
+
+		  if((SW1_SwitchState[0]==1) && (SW1_SwitchState[1]==0))					//button is unpressed
 		  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  			//GPIO_PIN_RESET is LOW, GPIO_PIN_SET is HIGH (enum)
 		  {
 			  switch(LED1_Period)
@@ -135,10 +138,19 @@ int main(void)
 					break;
 			  }
 		  }
-		  SW1_SwitchState[1] = SW1_SwitchState[0];									//save history
+		  SW1_SwitchState[1] = SW1_SwitchState[0];									//save SW1 history
+
+		  SW2_SwitchState[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);					//read SW2 from PB3
+
+		  if((SW2_SwitchState[0]==1) && (SW2_SwitchState[1]==0))					//button is unpressed
+		  {
+			  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7,
+					  !(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_7)));						//switch state LED D3
+		  }
+		  SW2_SwitchState[1] = SW2_SwitchState[0];									//save SW2 history
 	  }
 
-	  //control LED
+	  //time
 	  if(HAL_GetTick()-TimeStamp >= LED1_Period/2)							//time in millisecond
 	  {
 		  TimeStamp = HAL_GetTick();
