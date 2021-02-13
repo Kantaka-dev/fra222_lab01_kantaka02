@@ -92,9 +92,12 @@ int main(void)
 
   GPIO_PinState SW1_SwitchState[2];											//define variable that type is GPIO_PinState
   GPIO_PinState SW2_SwitchState[2];
+  GPIO_PinState SW3_SwitchState[2];
   uint16_t LED1_Period = 2000;												//LED1 default frequency at 0.5Hz
-  uint32_t TimeStamp = 0;													//time default at 0 s
+  uint32_t TimeStamp_LED1 = 0;												//time default at 0 s
+  uint32_t TimeStamp_LED3 = 0;
   uint32_t TimeStamp_button = 0;
+  uint8_t LED3_State0 = 0;													//LED3 default at mode0
 
   /* USER CODE END 2 */
 
@@ -151,9 +154,9 @@ int main(void)
 	  }
 
 	  //time
-	  if(HAL_GetTick()-TimeStamp >= LED1_Period/2)							//time in millisecond
+	  if(HAL_GetTick()-TimeStamp_LED1 >= LED1_Period/2)							//time in millisecond
 	  {
-		  TimeStamp = HAL_GetTick();
+		  TimeStamp_LED1 = HAL_GetTick();
 
 		  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET)			//blink LED D1 at PA9
 		  {
@@ -161,6 +164,16 @@ int main(void)
 		  } else {
 			  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
 		  }
+	  }
+
+	  if(LED3_State0)
+	  {
+	  	  if(HAL_GetTick()-TimeStamp_LED3 >= 500)
+	  	  {
+	  		  TimeStamp_LED3 = HAL_GetTick();
+
+
+	  	  }
 	  }
   }
   /* USER CODE END 3 */
