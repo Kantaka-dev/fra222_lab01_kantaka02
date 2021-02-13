@@ -421,12 +421,12 @@ int main(void)
  8000518:	f000 fadc 	bl	8000ad4 <HAL_GetTick>
  800051c:	6078      	str	r0, [r7, #4]
 
-		  if((SW1_SwitchState[0]==0) && (SW1_SwitchState[1]==1))					//button is pressed
+		  if((SW1_SwitchState[0]==1) && (SW1_SwitchState[1]==0))					//button is pressed
  800051e:	783b      	ldrb	r3, [r7, #0]
- 8000520:	2b00      	cmp	r3, #0
+ 8000520:	2b01      	cmp	r3, #1
  8000522:	d125      	bne.n	8000570 <main+0x98>
  8000524:	787b      	ldrb	r3, [r7, #1]
- 8000526:	2b01      	cmp	r3, #1
+ 8000526:	2b00      	cmp	r3, #0
  8000528:	d122      	bne.n	8000570 <main+0x98>
 		  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  			//GPIO_PIN_RESET is LOW, GPIO_PIN_SET is HIGH (enum)
 		  {
@@ -497,7 +497,7 @@ int main(void)
  800058a:	f000 faa3 	bl	8000ad4 <HAL_GetTick>
  800058e:	60b8      	str	r0, [r7, #8]
 
-		  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET)			//blink LED at PA9
+		  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET)			//blink LED D1 at PA9
  8000590:	f44f 7100 	mov.w	r1, #512	; 0x200
  8000594:	4809      	ldr	r0, [pc, #36]	; (80005bc <main+0xe4>)
  8000596:	f000 fd11 	bl	8000fbc <HAL_GPIO_ReadPin>

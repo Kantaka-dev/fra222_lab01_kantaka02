@@ -110,7 +110,7 @@ int main(void)
 		  SW1_SwitchState[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); 				//read SW1 from PA10
 		  TimeStamp_button = HAL_GetTick();
 
-		  if((SW1_SwitchState[0]==0) && (SW1_SwitchState[1]==1))					//button is pressed
+		  if((SW1_SwitchState[0]==1) && (SW1_SwitchState[1]==0))					//button is pressed
 		  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  			//GPIO_PIN_RESET is LOW, GPIO_PIN_SET is HIGH (enum)
 		  {
 			  switch(LED1_Period)
@@ -143,7 +143,7 @@ int main(void)
 	  {
 		  TimeStamp = HAL_GetTick();
 
-		  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET)			//blink LED at PA9
+		  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET)			//blink LED D1 at PA9
 		  {
 			  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
 		  } else {
