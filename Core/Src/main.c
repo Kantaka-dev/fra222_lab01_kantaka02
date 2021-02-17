@@ -93,10 +93,16 @@ int main(void)
   GPIO_PinState SW1_SwitchState[2];											//define variable that type is GPIO_PinState
   GPIO_PinState SW2_SwitchState[2];
   GPIO_PinState SW3_SwitchState[2];
+  GPIO_PinState SW4_SwitchState[2];
+
   uint16_t LED1_Period = 2000;												//LED1 default frequency at 0.5Hz
+  uint16_t LED4_Period = 0;													//LED4 default duty-cycle at 0%
+
+  uint32_t TimeStamp_button = 0;
   uint32_t TimeStamp_LED1 = 0;												//time default at 0 s
   uint32_t TimeStamp_LED3 = 0;
-  uint32_t TimeStamp_button = 0;
+  uint32_t TimeStamp_LED4 = 0;
+
   uint8_t LED3_State0 = 0;													//LED3 default at mode0
 
   /* USER CODE END 2 */
@@ -109,11 +115,12 @@ int main(void)
 
     /* USER CODE BEGIN 3 */													//able to write3
 
-	  //button
+	  //Button
 	  if(HAL_GetTick()-TimeStamp_button >= 100)									//control settling time for debouncing switch
 	  {
 		  TimeStamp_button = HAL_GetTick();
 
+		  //Task1
 		  SW1_SwitchState[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); 				//read SW1 from PA10
 
 		  if((SW1_SwitchState[0]==1) && (SW1_SwitchState[1]==0))					//button is unpressed
@@ -143,7 +150,7 @@ int main(void)
 		  }
 		  SW1_SwitchState[1] = SW1_SwitchState[0];									//save SW1 history
 
-
+		  //Task2
 		  SW2_SwitchState[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);					//read SW2 from PB3
 
 		  if((SW2_SwitchState[0]==1) && (SW2_SwitchState[1]==0))					//button is unpressed
@@ -153,7 +160,7 @@ int main(void)
 		  }
 		  SW2_SwitchState[1] = SW2_SwitchState[0];									//save SW2 history
 
-
+		  //Task3
 		  SW3_SwitchState[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);					//read SW3 from PB5
 
 		  if((SW3_SwitchState[0]==1) && (SW3_SwitchState[1]==0))					//button is unpressed
@@ -161,9 +168,21 @@ int main(void)
 			  LED3_State0 = !LED3_State0;
 		  }
 		  SW3_SwitchState[1] = SW3_SwitchState[0];									//save SW3 history
+
+		  //Task4 (Challenge)
+		  SW4_SwitchState[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);					//read SW4 from PB4
+
+		  if((SW4_SwitchState[0]==1) && (SW4_SwitchState[1]==0))					//button is unpressed
+		  {
+			  LED4_Period++;
+			  LED4_Period = LED4_Period%5;
+		  }
+		  SW4_SwitchState[1] = SW4_SwitchState[0];									//save SW4 history
 	  }
 
-	  //time
+	  //Time
+
+	  //Task1
 	  if(HAL_GetTick()-TimeStamp_LED1 >= LED1_Period/2)							//time in millisecond
 	  {
 		  TimeStamp_LED1 = HAL_GetTick();
@@ -176,8 +195,9 @@ int main(void)
 		  }
 	  }
 
-	  if(!LED3_State0)
-	  {
+	  //Task3
+	  if(!LED3_State0)														//blink LED D5 at PB6
+	  {																		//ON 0.5s and OFF 1.5s
 	  	  if((HAL_GetTick()-TimeStamp_LED3 >= 500) && (!HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6)))
 	  	  {
 	  		  TimeStamp_LED3 = HAL_GetTick();
@@ -189,7 +209,7 @@ int main(void)
 	  		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
 	  	  }
 	  }
-	  else
+	  else																	//ON 1.5s and OFF 0.5s
 	  {
 		  if((HAL_GetTick()-TimeStamp_LED3 >= 500) && (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6)))
 		  {
@@ -201,6 +221,21 @@ int main(void)
 		  	  TimeStamp_LED3 = HAL_GetTick();
 		  	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
 		  }
+	  }
+
+	  //Task4 (Challenge)
+	  //
+	  //try period at 4 millisecond => frequency at 250 Hz
+	  //
+	  if((HAL_GetTick()-TimeStamp_LED4 >= LED4_Period) && (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7)))	//blink LED D7 at PA7
+	  {
+		  TimeStamp_LED4 = HAL_GetTick();
+		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
+	  }
+	  else if((HAL_GetTick()-TimeStamp_LED4 >= 4-LED4_Period) && (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7)))
+	  {
+		  TimeStamp_LED4 = HAL_GetTick();
+		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
 	  }
   }
   /* USER CODE END 3 */
