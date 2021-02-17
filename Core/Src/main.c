@@ -143,6 +143,7 @@ int main(void)
 		  }
 		  SW1_SwitchState[1] = SW1_SwitchState[0];									//save SW1 history
 
+
 		  SW2_SwitchState[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);					//read SW2 from PB3
 
 		  if((SW2_SwitchState[0]==1) && (SW2_SwitchState[1]==0))					//button is unpressed
@@ -151,6 +152,15 @@ int main(void)
 					  !(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_7)));						//switch state LED D3
 		  }
 		  SW2_SwitchState[1] = SW2_SwitchState[0];									//save SW2 history
+
+
+		  SW3_SwitchState[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);					//read SW3 from PB5
+
+		  if((SW3_SwitchState[0]==1) && (SW3_SwitchState[1]==0))					//button is unpressed
+		  {
+			  LED3_State0 = !LED3_State0;
+		  }
+		  SW3_SwitchState[1] = SW3_SwitchState[0];									//save SW3 history
 	  }
 
 	  //time
@@ -166,14 +176,31 @@ int main(void)
 		  }
 	  }
 
-	  if(LED3_State0)
+	  if(!LED3_State0)
 	  {
-	  	  if(HAL_GetTick()-TimeStamp_LED3 >= 500)
+	  	  if((HAL_GetTick()-TimeStamp_LED3 >= 500) && (!HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6)))
 	  	  {
 	  		  TimeStamp_LED3 = HAL_GetTick();
-
-
+	  		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
 	  	  }
+	  	  else if((HAL_GetTick()-TimeStamp_LED3 >= 1500) && (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6)))
+	  	  {
+	  		  TimeStamp_LED3 = HAL_GetTick();
+	  		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+	  	  }
+	  }
+	  else
+	  {
+		  if((HAL_GetTick()-TimeStamp_LED3 >= 500) && (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6)))
+		  {
+		  	  TimeStamp_LED3 = HAL_GetTick();
+		  	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+		  }
+		  else if((HAL_GetTick()-TimeStamp_LED3 >= 1500) && (!HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6)))
+		  {
+		  	  TimeStamp_LED3 = HAL_GetTick();
+		  	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+		  }
 	  }
   }
   /* USER CODE END 3 */
